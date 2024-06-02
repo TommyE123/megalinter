@@ -28,6 +28,7 @@ Note: Can be used with `oxsecurity/megalinter@beta` in your GitHub Action mega-l
   - Change `golangci-lint` lint mode to `project`
   - Disable sql-lint as it is no longer maintained
   - Add new entries `findUnusedCode` and `findUnusedBaselineEntry` in default `psalm.xml` configuration file for PHP_PSALM linter. Related to <https://github.com/oxsecurity/megalinter/issues/3538>
+  - Powershell error table format improvements
 
 - Doc
   - Handle disabled_reason property in descriptors
