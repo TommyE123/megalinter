@@ -6,7 +6,6 @@ import re
 import shlex
 import tempfile
 
-
 import requests
 import yaml
 
