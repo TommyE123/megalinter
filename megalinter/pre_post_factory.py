@@ -8,6 +8,7 @@ import sys
 from megalinter import config, utils
 
 
+
 # User defined commands to run before running linters
 def run_pre_commands(mega_linter):
     return run_pre_post_commands("PRE_COMMANDS", "[Pre]", mega_linter)
