@@ -3,10 +3,13 @@
 Use PowerShell to lint Powershell files
 https://github.com/PowerShell/PSScriptAnalyzer
 """
+import os
 import sys
 from shutil import get_terminal_size
 
 from megalinter import Linter, config
+
+os.environ["COLUMNS"] = "180"
 
 
 class PowershellLinter(Linter):
