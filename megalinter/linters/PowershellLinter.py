@@ -7,7 +7,6 @@ import os
 import sys
 from shutil import get_terminal_size
 
-
 from megalinter import Linter, config
 
 os.environ["COLUMNS"] = "130"
