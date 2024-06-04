@@ -10,6 +10,7 @@ from shutil import get_terminal_size
 from megalinter import Linter, config
 
 
+
 class PowershellLinter(Linter):
     def __init__(self, params=None, linter_config=None):
         super(PowershellLinter, self).__init__(params, linter_config)
