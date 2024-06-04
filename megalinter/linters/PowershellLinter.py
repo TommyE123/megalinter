@@ -64,7 +64,7 @@ class PowershellLinter(Linter):
             # (severity first)
             pwsh_script[
                 0
-            ] += " | Format-Table -AutoSize -Wrap -Property 'Severity ', 'Rule Name', 'Script Name', 'Line ', Message"
+            ] += " | Format-Table -AutoSize -Wrap -Property 'Severity', 'RuleName', 'ScriptName', 'Line', Message"
             # Format output to fit in terminal, respecting the terminal width.
             # Use good defaults, shutil respects COLUMNS env var. For more info:
             # https://stackoverflow.com/a/76889369
