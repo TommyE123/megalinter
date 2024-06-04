@@ -9,8 +9,6 @@ from shutil import get_terminal_size
 
 from megalinter import Linter, config
 
-os.environ["COLUMNS"] = "130"
-
 
 class PowershellLinter(Linter):
     def __init__(self, params=None, linter_config=None):
@@ -64,12 +62,9 @@ class PowershellLinter(Linter):
             # (severity first)
             pwsh_script[
                 0
-            ] += " | Format-Table -AutoSize -Wrap -Property 'Severity', 'RuleName', 'ScriptName', 'Line', Message"
-            # Format output to fit in terminal, respecting the terminal width.
-            # Use good defaults, shutil respects COLUMNS env var. For more info:
-            # https://stackoverflow.com/a/76889369
-            size = get_terminal_size()
-            pwsh_script[0] += f" | Out-String -Width {size.columns}"
+            ] += " | Format-Table -AutoSize -Wrap -Property 'Severity', 'RuleName', 'ScriptName', 'Line', Message -Align Left"
+
+            pwsh_script[0] += f" | Out-String -Width 140" # 130 is the default width of the table to prevent cut off of the output
         cmd = [
             *self.cli_executable,
             "-NoProfile",
