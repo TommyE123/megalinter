@@ -9,7 +9,7 @@ from shutil import get_terminal_size
 
 from megalinter import Linter, config
 
-os.environ["COLUMNS"] = "180"
+os.environ["COLUMNS"] = "120"
 
 
 class PowershellLinter(Linter):
