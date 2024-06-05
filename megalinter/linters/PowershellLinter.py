@@ -3,12 +3,10 @@
 Use PowerShell to lint Powershell files
 https://github.com/PowerShell/PSScriptAnalyzer
 """
-import os
 import sys
 from shutil import get_terminal_size
 
-from megalinter import Linter, config
-
+from megalinter import Linter, config, utils
 
 
 class PowershellLinter(Linter):
@@ -58,14 +56,10 @@ class PowershellLinter(Linter):
             and self.cli_lint_fix_arg_name is not None
         ):
             pwsh_script[0] += f" {self.cli_lint_fix_arg_name}"
-        if self.linter_name == "powershell":
-            # Enforce table output for easier parsing of number of errors
-            # (severity first)
-            pwsh_script[
-                0
-            ] += " | Format-Table -AutoSize -Wrap -Property 'Severity', 'RuleName', 'ScriptName', 'Line', Message -Align Left"
 
-            pwsh_script[0] += f" | Out-String -Width 140" # 130 is the default width of the table to prevent cut off of the output
+        if self.linter_name == "powershell":
+            pwsh_script[0] = self.format_powershell_output(pwsh_script[0])
+
         cmd = [
             *self.cli_executable,
             "-NoProfile",
@@ -74,6 +68,19 @@ class PowershellLinter(Linter):
             "\n".join(pwsh_script),
         ]
         return cmd
+
+    def format_powershell_output(self, pwsh_script):
+        if utils.is_ci():
+            width = 140  # Use a default width in CI environments to prevent output cutoff
+        else:
+            width = get_terminal_size().columns  # Use the terminal width when not in CI
+
+        # Format the output to a table with specific columns
+        pwsh_script += " | Format-Table -AutoSize -Wrap -Property 'Severity', 'RuleName', 'ScriptName', 'Line', Message"
+
+        # Ensure the output string fits within the specified width
+        pwsh_script += f" | Out-String -Width {width}"
+        return pwsh_script
 
     # Build the CLI command to get linter version
     def build_version_command(self):
