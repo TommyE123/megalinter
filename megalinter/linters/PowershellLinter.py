@@ -76,7 +76,12 @@ class PowershellLinter(Linter):
             width = get_terminal_size().columns  # Use the terminal width when not in CI
 
         # Format the output to a table with specific columns
-        pwsh_script += " | Format-Table -AutoSize -Wrap -Property 'Severity', 'RuleName', 'ScriptName', 'Line', Message"
+        pwsh_script += " | Format-Table -AutoSize -Wrap -Property " \
+                   "@{Name='Severity'; Expression={$_.Severity}; Alignment='left'}," \
+                   " @{Name='RuleName'; Expression={$_.RuleName}; Alignment='left'}," \
+                   " @{Name='ScriptName'; Expression={$_.ScriptName}; Alignment='left'}," \
+                   " @{Name='Line'; Expression={$_.Line}; Alignment='left'}," \
+                   " @{Name='Message'; Expression={$_.Message}; Alignment='left'}"
 
         # Ensure the output string fits within the specified width
         pwsh_script += f" | Out-String -Width {width}"
