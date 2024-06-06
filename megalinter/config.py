@@ -227,7 +227,7 @@ def get_list(request_id, config_var, default=None):
 def get_list_args(request_id, config_var, default=None):
     # Retrieve the variable from the configuration
     var = get(request_id, config_var, None)
-    logging.info("VAR: " + var)
+    logging.info("VAR Orig: " + var)
     # Check if the variable is None and return the default value if true
     if var is None:
         return default
@@ -249,7 +249,7 @@ def get_list_args(request_id, config_var, default=None):
 
     # Check if the variable is a string and return it as a list if it does not contain spaces
     if isinstance(var, str) and " " not in var.strip():
-        logging.info("VAR: " + [var])
+        logging.info("VAR strip: " + var")
         return [var]
     
     logging.info("commands: " + "[var]")
