@@ -249,7 +249,7 @@ def get_list_args(request_id, config_var, default=None):
 
     # Check if the variable is a string and return it as a list if it does not contain spaces
     if isinstance(var, str) and " " not in var.strip():
-        logging.info("VAR strip: " + var")
+        logging.info("VAR strip: " + var)
         return [var]
     
     logging.info("commands: " + "[var]")
