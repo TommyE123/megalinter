@@ -17,6 +17,9 @@ linters:
   - class: DotnetFormatLinter
     linter_name: dotnet-format
     is_formatter: true
+    file_extensions:
+      - ".sln"
+      - ".csproj"
     linter_text: |
       dotnet-format requires a `.sln` or `.csproj` file to run correctly.
     linter_url: https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-format
@@ -25,7 +28,7 @@ linters:
     cli_executable: dotnet
     cli_lint_extra_args:
       - "format"
-      - "{{WORKSPACE}}"
+    cli_lint_extra_args_after:
       - "--verify-no-changes"
     cli_lint_fix_arg_name: "--megalinter-fix-flag" # Workaround for DotnetFormatLinter class behavior
     cli_lint_fix_remove_args:
@@ -33,8 +36,11 @@ linters:
     cli_help_extra_args:
       - format
     examples:
-      - "dotnet format {{WORKSPACE}} --verify-no-changes"
-      - "dotnet format {{WORKSPACE}}" # Fix
+      - "dotnet format --verify-no-changes"
+      - "dotnet format Solution.sln --verify-no-changes"
+      - "dotnet format Folder/Solution.sln --verify-no-changes"
+      - "dotnet format Project.csproj --verify-no-changes"
+      - "dotnet format" # Fix
   # CSharpier
   - class: DotNetToolLinter
     linter_name: csharpier
