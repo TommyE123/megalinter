@@ -251,7 +251,7 @@ def get_list_args(request_id, config_var, default=None):
     if isinstance(var, str) and " " not in var.strip():
         logging.info("VAR strip: " + var)
         return [var]
-    
+
     logging.info("commands: " + "[var]")
     # Otherwise, split the string using shlex and return the result
     return shlex.split(var)
