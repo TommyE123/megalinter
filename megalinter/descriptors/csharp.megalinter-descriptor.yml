@@ -20,12 +20,14 @@ linters:
     linter_text: |
       dotnet-format requires a `.sln` or `.csproj` file to run correctly.
     linter_url: https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-format
-    linter_repo: https://github.com/dotnet/format
+    linter_repo: https://github.com/dotnet/sdk
+    linter_rules_configuration_url: https://github.com/dotnet/sdk/tree/main/documentation/format/docs
     linter_image_url: https://user-images.githubusercontent.com/9797472/61659851-6bbdc880-ac7d-11e9-95f7-d30c7de1a18a.png
     cli_executable: dotnet
+    cli_lint_mode: project
     cli_lint_extra_args:
       - "format"
-      - "--exclude *.vb"
+      - "--exclude *.vb *.vbproj"
     cli_lint_extra_args_after:
       - "--verify-no-changes"
     cli_lint_fix_arg_name: "--megalinter-fix-flag" # Workaround for DotnetFormatLinter class behavior
