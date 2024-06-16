@@ -78,6 +78,8 @@ linters:
     examples:
       - "yamllint myfile.yaml"
       - "yamllint -c .yamllint.yml myfile.yaml"
+      - "yamllint --strict"
+      - "yamllint --no-warnings"
     install:
       pip:
         - yamllint

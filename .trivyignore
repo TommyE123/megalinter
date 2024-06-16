@@ -44,6 +44,7 @@ CVE-2022-33980
 CVE-2022-42889
 CVE-2022-1471
 CVE-2022-25857
+CVE-2024-4068
 
 # terrascan
 # https://github.com/tenable/terrascan/issues/1674
@@ -54,6 +55,10 @@ CVE-2024-26147
 
 # tflint
 CVE-2024-3817
+
+# Misc
+# Not fixed yet https://avd.aquasec.com/nvd/2024/cve-2024-29415/
+CVE-2024-29415
 
 # Dockerfile
 DS001
