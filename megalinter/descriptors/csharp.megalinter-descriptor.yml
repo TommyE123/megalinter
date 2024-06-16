@@ -30,7 +30,6 @@ linters:
     cli_lint_extra_args:
       - "format"
       - "--include **/*.cs"
-    cli_lint_extra_args_after:
       - "--verify-no-changes"
     cli_lint_fix_arg_name: "--megalinter-fix-flag" # Workaround for DotnetFormatLinter class behavior
     cli_lint_fix_remove_args:
