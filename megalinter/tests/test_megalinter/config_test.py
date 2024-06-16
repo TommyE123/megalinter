@@ -17,7 +17,6 @@ from megalinter import config, utilstest
 from megalinter.constants import ML_REPO
 from megalinter.MegaLinter import Megalinter
 from megalinter.utils import REPO_HOME_DEFAULT
-from unittest.mock import patch
 
 
 class config_test(unittest.TestCase):
