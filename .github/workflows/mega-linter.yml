@@ -67,7 +67,7 @@ jobs:
 
         # You can override MegaLinter flavor used to have faster performances
         # More info at https://megalinter.io/flavors/
-        uses: tommye123/megalinter@ansible_subfolder_issue # ml workflow change
+        uses: tommye123/megalinter@ansible_test # ml workflow change
 
         id: ml
 
