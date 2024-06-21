@@ -4,7 +4,6 @@ descriptor_flavors:
   - all_flavors # Applicable to CI in any language project
   - cupcake
   - security
-files_sub_directory: ansible
 file_names_not_ends_with:
   - "vault.yml"
   - "vault.yaml"
