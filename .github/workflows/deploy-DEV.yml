@@ -101,7 +101,7 @@ jobs:
       ###################################
       - name: Build MegaLinter Docker Image (quick)
         id: docker_build_quick
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: Dockerfile-quick
@@ -112,11 +112,65 @@ jobs:
             BUILD_REVISION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.revision'] }}
             MEGA_LINTER_BASE_IMAGE="oxsecurity/megalinter:beta"
           load: true
-          push: true
+          push: false
           secrets: |
             GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
           tags: ${{ steps.meta.outputs.tags }}
         timeout-minutes: 90
+
+      #######################################
+      # Build image (full for forked repos) #
+      #######################################
+      - name: Build MegaLinter Docker Image (full from forks)
+        if: |
+          (
+          (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository) ||
+          (github.event_name == 'push' && github.repository != 'oxsecurity/megalinter')
+          )
+          &&
+          !contains(github.event.head_commit.message, 'quick build')
+        id: docker_build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile
+          platforms: linux/amd64
+          build-args: |
+            BUILD_DATE=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.created'] }}
+            BUILD_VERSION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
+            BUILD_REVISION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.revision'] }}
+          load: true
+          push: false
+          secrets: |
+            GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
+          tags: ${{ steps.meta.outputs.tags }}
+        timeout-minutes: 90
+
+      ####################################
+      # Build image (full for main repo) #
+      ####################################
+      - name: Build MegaLinter Docker Image (full from main repo) & push
+        if: |
+          (
+          (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) ||
+          (github.event_name == 'push' && github.repository == 'oxsecurity/megalinter')
+          )
+          &&
+          !contains(github.event.head_commit.message, 'quick build')
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile
+          platforms: linux/amd64
+          build-args: |
+            BUILD_DATE=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.created'] }}
+            BUILD_VERSION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
+            BUILD_REVISION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.revision'] }}
+          load: true
+          push: false
+          secrets: |
+            GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
+          tags: ${{ steps.meta.outputs.tags }}
 
       # Clean docker build cache
       - name: Clean docker buildx cache
