@@ -31,7 +31,7 @@ linters:
       - --format
       - sarif
     cli_lint_errors_count: regex_number
-    cli_lint_errors_regex: "WARNING\\s{2}Listing\\s[0-9]+\\sviolation\\(s\\)"
+    cli_lint_errors_regex: "(?<=WARNING\\s{2}Listing\\s).*?(?=\\sviolation\\(s\\))"
     cli_version_arg_name: "--version"
     examples:
       - "ansible-lint -v"
