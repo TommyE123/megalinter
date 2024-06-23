@@ -76,6 +76,7 @@ jobs:
           [
             "action_actionlint",
             "ansible_ansible_lint",
+            "api_spectral",
             "arm_arm_ttk",
             "bash_exec",
             "bash_shellcheck",
@@ -84,7 +85,6 @@ jobs:
             "c_cpplint",
             "c_clang_format",
             "clojure_clj_kondo",
-            "clojure_cljstyle",
             "cloudformation_cfn_lint",
             "coffee_coffeelint",
             "copypaste_jscpd",
@@ -112,7 +112,6 @@ jobs:
             "javascript_standard",
             "javascript_prettier",
             "json_jsonlint",
-            "json_eslint_plugin_jsonc",
             "json_v8r",
             "json_prettier",
             "json_npm_package_json_lint",
@@ -124,9 +123,7 @@ jobs:
             "kubernetes_kubescape",
             "latex_chktex",
             "lua_luacheck",
-            "makefile_checkmake",
             "markdown_markdownlint",
-            "markdown_remark_lint",
             "markdown_markdown_link_check",
             "markdown_markdown_table_formatter",
             "openapi_spectral",
@@ -135,6 +132,7 @@ jobs:
             "php_phpstan",
             "php_psalm",
             "php_phplint",
+            "php_phpcsfixer",
             "powershell_powershell",
             "powershell_powershell_formatter",
             "protobuf_protolint",
@@ -156,6 +154,7 @@ jobs:
             "repository_gitleaks",
             "repository_grype",
             "repository_kics",
+            "repository_ls_lint",
             "repository_secretlint",
             "repository_semgrep",
             "repository_syft",
@@ -178,9 +177,7 @@ jobs:
             "spell_proselint",
             "spell_vale",
             "spell_lychee",
-            "sql_sql_lint",
             "sql_sqlfluff",
-            "sql_tsqllint",
             "swift_swiftlint",
             "tekton_tekton_lint",
             "terraform_tflint",
@@ -233,7 +230,7 @@ jobs:
         run: echo "BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> ${GITHUB_ENV}
 
       - name: Build Image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: linters/${{ matrix.linter }}/Dockerfile

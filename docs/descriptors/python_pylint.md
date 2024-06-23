@@ -9,7 +9,7 @@ description: How to use pylint (configure, ignore files, ignore errors, help & v
 
 ## pylint documentation
 
-- Version in MegaLinter: **3.1.0**
+- Version in MegaLinter: **3.2.3**
 - Visit [Official Web Site](https://pylint.readthedocs.io){target=_blank}
 - See [How to configure pylint rules](https://pylint.readthedocs.io/en/stable/user_guide/configuration/index.html){target=_blank}
   - If custom `.pylintrc` config file isn't found, [.pylintrc](https://github.com/oxsecurity/megalinter/tree/main/TEMPLATES/.pylintrc){target=_blank} will be used
@@ -58,9 +58,9 @@ This linter is available in the following flavours
 
 |                                                                         <!-- -->                                                                         | Flavor                                                 | Description                                     | Embedded linters |                                                                                                                                                                                       Info |
 |:--------------------------------------------------------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------|:------------------------------------------------|:----------------:|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
-| <img src="https://github.com/oxsecurity/megalinter/raw/main/docs/assets/images/mega-linter-square.png" alt="" height="32px" class="megalinter-icon"></a> | [all](https://megalinter.io/beta/supported-linters/)   | Default MegaLinter Flavor                       |       122        |                 ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/oxsecurity/megalinter/beta) ![Docker Pulls](https://img.shields.io/docker/pulls/oxsecurity/megalinter) |
-|       <img src="https://github.com/oxsecurity/megalinter/raw/main/docs/assets/icons/cupcake.ico" alt="" height="32px" class="megalinter-icon"></a>       | [cupcake](https://megalinter.io/beta/flavors/cupcake/) | MegaLinter for the most commonly used languages |        85        | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/oxsecurity/megalinter-cupcake/beta) ![Docker Pulls](https://img.shields.io/docker/pulls/oxsecurity/megalinter-cupcake) |
-|       <img src="https://github.com/oxsecurity/megalinter/raw/main/docs/assets/icons/python.ico" alt="" height="32px" class="megalinter-icon"></a>        | [python](https://megalinter.io/beta/flavors/python/)   | Optimized for PYTHON based projects             |        65        |   ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/oxsecurity/megalinter-python/beta) ![Docker Pulls](https://img.shields.io/docker/pulls/oxsecurity/megalinter-python) |
+| <img src="https://github.com/oxsecurity/megalinter/raw/main/docs/assets/images/mega-linter-square.png" alt="" height="32px" class="megalinter-icon"></a> | [all](https://megalinter.io/beta/supported-linters/)   | Default MegaLinter Flavor                       |       125        |                 ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/oxsecurity/megalinter/beta) ![Docker Pulls](https://img.shields.io/docker/pulls/oxsecurity/megalinter) |
+|       <img src="https://github.com/oxsecurity/megalinter/raw/main/docs/assets/icons/cupcake.ico" alt="" height="32px" class="megalinter-icon"></a>       | [cupcake](https://megalinter.io/beta/flavors/cupcake/) | MegaLinter for the most commonly used languages |        84        | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/oxsecurity/megalinter-cupcake/beta) ![Docker Pulls](https://img.shields.io/docker/pulls/oxsecurity/megalinter-cupcake) |
+|       <img src="https://github.com/oxsecurity/megalinter/raw/main/docs/assets/icons/python.ico" alt="" height="32px" class="megalinter-icon"></a>        | [python](https://megalinter.io/beta/flavors/python/)   | Optimized for PYTHON based projects             |        64        |   ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/oxsecurity/megalinter-python/beta) ![Docker Pulls](https://img.shields.io/docker/pulls/oxsecurity/megalinter-python) |
 
 ## Behind the scenes
 
@@ -209,11 +209,12 @@ Main:
                         pylint. (default: (3, 12))
   --ignored-modules <module names>
                         List of module names for which member attributes
-                        should not be checked (useful for modules/projects
-                        where namespaces are manipulated during runtime and
-                        thus existing member attributes cannot be deduced by
-                        static analysis). It supports qualified module names,
-                        as well as Unix pattern matching. (default: ())
+                        should not be checked and will not be imported (useful
+                        for modules/projects where namespaces are manipulated
+                        during runtime and thus existing member attributes
+                        cannot be deduced by static analysis). It supports
+                        qualified module names, as well as Unix pattern
+                        matching. (default: ())
   --analyse-fallback-blocks <y or n>
                         Analyse import fallback blocks. This can be used to
                         support both Python 2 and 3 compatible code, which
@@ -224,6 +225,10 @@ Main:
                         Clear in-memory caches upon conclusion of linting.
                         Useful if running pylint in a server-like mode.
                         (default: False)
+  --prefer-stubs <y or n>
+                        Resolve imports to .pyi stubs if available. May reduce
+                        no-member messages and increase not-an-iterable
+                        messages. (default: False)
 
 Reports:
   Options related to output formatting and reporting
@@ -297,17 +302,59 @@ Logging:
                         `old` means using % formatting, `new` is for `{}`
                         formatting. (default: old)
 
-Method_args:
-  BaseChecker for method_args.
+Similarities:
+  Checks for similarities and duplicated code.
 
-  --timeout-methods <comma separated list>
-                        List of qualified names (i.e., library.method) which
-                        require a timeout parameter e.g.
-                        'requests.api.get,requests.api.post' (default:
-                        ('requests.api.delete', 'requests.api.get',
-                        'requests.api.head', 'requests.api.options',
-                        'requests.api.patch', 'requests.api.post',
-                        'requests.api.put', 'requests.api.request'))
+  --min-similarity-lines <int>
+                        Minimum lines number of a similarity. (default: 4)
+  --ignore-comments <y or n>
+                        Comments are removed from the similarity computation
+                        (default: True)
+  --ignore-docstrings <y or n>
+                        Docstrings are removed from the similarity computation
+                        (default: True)
+  --ignore-imports <y or n>
+                        Imports are removed from the similarity computation
+                        (default: True)
+  --ignore-signatures <y or n>
+                        Signatures are removed from the similarity computation
+                        (default: True)
+
+Exceptions:
+  Exception related checks.
+
+  --overgeneral-exceptions <comma-separated class names>
+                        Exceptions that will emit a warning when caught.
+                        (default: ('builtins.BaseException',
+                        'builtins.Exception'))
+
+Refactoring:
+  Looks for code which can be refactored.
+
+  --max-nested-blocks <int>
+                        Maximum number of nested blocks for function / method
+                        body (default: 5)
+  --never-returning-functions <members names>
+                        Complete name of functions that never returns. When
+                        checking for inconsistent-return-statements if a never
+                        returning function is called then it will be
+                        considered as an explicit return statement and no
+                        message will be printed. (default: ('sys.exit',
+                        'argparse.parse_error'))
+  --suggest-join-with-non-empty-separator <y or n>
+                        Let 'consider-using-join' be raised when the separator
+                        to join on would be non-empty (resulting in expected
+                        fixes of the type: ``"- " + " - ".join(items)``)
+                        (default: True)
+
+Miscellaneous:
+  BaseChecker for encoding issues.
+
+  --notes <comma separated values>
+                        List of note tags to take in consideration, separated
+                        by a comma. (default: ('FIXME', 'XXX', 'TODO'))
+  --notes-rgx <regexp>  Regular expression of note tags to take in
+                        consideration. (default: )
 
 String:
   Check string literals.
@@ -322,6 +369,187 @@ String:
                         generates a warning when the character used as a quote
                         delimiter is used inconsistently within a module.
                         (default: False)
+
+Typecheck:
+  Try to find bugs in the code using type inference.
+
+  --ignore-on-opaque-inference <y or n>
+                        This flag controls whether pylint should warn about
+                        no-member and similar checks whenever an opaque object
+                        is returned when inferring. The inference can return
+                        multiple potential results while evaluating a Python
+                        object, but some branches might not be evaluated,
+                        which results in partial inference. In that case, it
+                        might be useful to still emit no-member and other
+                        checks for the rest of the inferred objects. (default:
+                        True)
+  --mixin-class-rgx <regexp>
+                        Regex pattern to define which classes are considered
+                        mixins. (default: .*[Mm]ixin)
+  --ignore-mixin-members <y or n>
+                        Tells whether missing members accessed in mixin class
+                        should be ignored. A class is considered mixin if its
+                        name matches the mixin-class-rgx option. (default:
+                        True)
+  --ignored-checks-for-mixins <list of messages names>
+                        List of symbolic message names to ignore for Mixin
+                        members. (default: ['no-member', 'not-async-context-
+                        manager', 'not-context-manager', 'attribute-defined-
+                        outside-init'])
+  --ignore-none <y or n>
+                        Tells whether to warn about missing members when the
+                        owner of the attribute is inferred to be None.
+                        (default: True)
+  --ignored-classes <members names>
+                        List of class names for which member attributes should
+                        not be checked (useful for classes with dynamically
+                        set attributes). This supports the use of qualified
+                        names. (default: ('optparse.Values', 'thread._local',
+                        '_thread._local', 'argparse.Namespace'))
+  --generated-members <members names>
+                        List of members which are set dynamically and missed
+                        by pylint inference system, and so shouldn't trigger
+                        E1101 when accessed. Python regular expressions are
+                        accepted. (default: ())
+  --contextmanager-decorators <decorator names>
+                        List of decorators that produce context managers, such
+                        as contextlib.contextmanager. Add to this list to
+                        register other decorators that produce valid context
+                        managers. (default: ['contextlib.contextmanager'])
+  --missing-member-hint-distance <member hint edit distance>
+                        The minimum edit distance a name should have in order
+                        to be considered a similar match for a missing member
+                        name. (default: 1)
+  --missing-member-max-choices <member hint max choices>
+                        The total number of similar names that should be taken
+                        in consideration when showing a hint for a missing
+                        member. (default: 1)
+  --missing-member-hint <missing member hint>
+                        Show a hint with possible names when a member name was
+                        not found. The aspect of finding the hint is based on
+                        edit distance. (default: True)
+  --signature-mutators <decorator names>
+                        List of decorators that change the signature of a
+                        decorated function. (default: [])
+
+Spelling:
+  Check spelling in comments and docstrings.
+
+  --spelling-dict <dict name>
+                        Spelling dictionary name. No available dictionaries :
+                        You need to install both the python package and the
+                        system dependency for enchant to work. (default: )
+  --spelling-ignore-words <comma separated words>
+                        List of comma separated words that should not be
+                        checked. (default: )
+  --spelling-private-dict-file <path to file>
+                        A path to a file that contains the private dictionary;
+                        one word per line. (default: )
+  --spelling-store-unknown-words <y or n>
+                        Tells whether to store unknown words to the private
+                        dictionary (see the --spelling-private-dict-file
+                        option) instead of raising a message. (default: n)
+  --max-spelling-suggestions N
+                        Limits count of emitted suggestions for spelling
+                        mistakes. (default: 4)
+  --spelling-ignore-comment-directives <comma separated words>
+                        List of comma separated words that should be
+                        considered directives if they appear at the beginning
+                        of a comment and should not be checked. (default: fmt:
+                        on,fmt: off,noqa:,noqa,nosec,isort:skip,mypy:)
+
+Imports:
+  BaseChecker for import statements.
+
+  --deprecated-modules <modules>
+                        Deprecated modules which should not be used, separated
+                        by a comma. (default: ())
+  --preferred-modules <module:preferred-module>
+                        Couples of modules and preferred modules, separated by
+                        a comma. (default: ())
+  --import-graph <file.gv>
+                        Output a graph (.gv or any supported image format) of
+                        all (i.e. internal and external) dependencies to the
+                        given file (report RP0402 must not be disabled).
+                        (default: )
+  --ext-import-graph <file.gv>
+                        Output a graph (.gv or any supported image format) of
+                        external dependencies to the given file (report RP0402
+                        must not be disabled). (default: )
+  --int-import-graph <file.gv>
+                        Output a graph (.gv or any supported image format) of
+                        internal dependencies to the given file (report RP0402
+                        must not be disabled). (default: )
+  --known-standard-library <modules>
+                        Force import order to recognize a module as part of
+                        the standard compatibility libraries. (default: ())
+  --known-third-party <modules>
+                        Force import order to recognize a module as part of a
+                        third party library. (default: ('enchant',))
+  --allow-any-import-level <modules>
+                        List of modules that can be imported at any level, not
+                        just the top level one. (default: ())
+  --allow-wildcard-with-all <y or n>
+                        Allow wildcard imports from modules that define
+                        __all__. (default: False)
+  --allow-reexport-from-package <y or n>
+                        Allow explicit reexports by alias from a package
+                        __init__. (default: False)
+
+Variables:
+  BaseChecker for variables.
+
+  --init-import <y or n>
+                        Tells whether we should check for unused import in
+                        __init__ files. (default: False)
+  --dummy-variables-rgx <regexp>
+                        A regular expression matching the name of dummy
+                        variables (i.e. expected to not be used). (default: _+
+                        $|(_[a-zA-Z0-9_]*[a-zA-Z0-
+                        9]+?$)|dummy|^ignored_|^unused_)
+  --additional-builtins <comma separated list>
+                        List of additional names supposed to be defined in
+                        builtins. Remember that you should avoid defining new
+                        builtins when possible. (default: ())
+  --callbacks <callbacks>
+                        List of strings which can identify a callback function
+                        by name. A callback name must start or end with one of
+                        those strings. (default: ('cb_', '_cb'))
+  --redefining-builtins-modules <comma separated list>
+                        List of qualified module names which can have objects
+                        that can redefine builtins. (default: ('six.moves',
+                        'past.builtins', 'future.builtins', 'builtins', 'io'))
+  --ignored-argument-names <regexp>
+                        Argument names that match this expression will be
+                        ignored. (default:
+                        re.compile('_.*|^ignored_|^unused_'))
+  --allow-global-unused-variables <y or n>
+                        Tells whether unused global variables should be
+                        treated as a violation. (default: True)
+  --allowed-redefined-builtins <comma separated list>
+                        List of names allowed to shadow builtins (default: ())
+
+Classes:
+  Checker for class nodes.
+
+  --defining-attr-methods <method names>
+                        List of method names used to declare (i.e. assign)
+                        instance attributes. (default: ('__init__', '__new__',
+                        'setUp', 'asyncSetUp', '__post_init__'))
+  --valid-classmethod-first-arg <argument names>
+                        List of valid names for the first argument in a class
+                        method. (default: ('cls',))
+  --valid-metaclass-classmethod-first-arg <argument names>
+                        List of valid names for the first argument in a
+                        metaclass class method. (default: ('mcs',))
+  --exclude-protected <protected access exclusions>
+                        List of member names, which should be excluded from
+                        the protected access warning. (default: ('_asdict',
+                        '_fields', '_replace', '_source', '_make',
+                        'os._exit'))
+  --check-protected-access-in-special-methods <y or n>
+                        Warn about protected attribute access inside special
+                        methods (default: False)
 
 Format:
   Formatting checker.
@@ -386,87 +614,6 @@ Design:
                         List of regular expressions of class ancestor names to
                         ignore when counting public methods (see R0903)
                         (default: [])
-
-Refactoring:
-  Looks for code which can be refactored.
-
-  --max-nested-blocks <int>
-                        Maximum number of nested blocks for function / method
-                        body (default: 5)
-  --never-returning-functions <members names>
-                        Complete name of functions that never returns. When
-                        checking for inconsistent-return-statements if a never
-                        returning function is called then it will be
-                        considered as an explicit return statement and no
-                        message will be printed. (default: ('sys.exit',
-                        'argparse.parse_error'))
-  --suggest-join-with-non-empty-separator <y or n>
-                        Let 'consider-using-join' be raised when the separator
-                        to join on would be non-empty (resulting in expected
-                        fixes of the type: ``"- " + " - ".join(items)``)
-                        (default: True)
-
-Typecheck:
-  Try to find bugs in the code using type inference.
-
-  --ignore-on-opaque-inference <y or n>
-                        This flag controls whether pylint should warn about
-                        no-member and similar checks whenever an opaque object
-                        is returned when inferring. The inference can return
-                        multiple potential results while evaluating a Python
-                        object, but some branches might not be evaluated,
-                        which results in partial inference. In that case, it
-                        might be useful to still emit no-member and other
-                        checks for the rest of the inferred objects. (default:
-                        True)
-  --mixin-class-rgx <regexp>
-                        Regex pattern to define which classes are considered
-                        mixins. (default: .*[Mm]ixin)
-  --ignore-mixin-members <y or n>
-                        Tells whether missing members accessed in mixin class
-                        should be ignored. A class is considered mixin if its
-                        name matches the mixin-class-rgx option. (default:
-                        True)
-  --ignored-checks-for-mixins <list of messages names>
-                        List of symbolic message names to ignore for Mixin
-                        members. (default: ['no-member', 'not-async-context-
-                        manager', 'not-context-manager', 'attribute-defined-
-                        outside-init'])
-  --ignore-none <y or n>
-                        Tells whether to warn about missing members when the
-                        owner of the attribute is inferred to be None.
-                        (default: True)
-  --ignored-classes <members names>
-                        List of class names for which member attributes should
-                        not be checked (useful for classes with dynamically
-                        set attributes). This supports the use of qualified
-                        names. (default: ('optparse.Values', 'thread._local',
-                        '_thread._local', 'argparse.Namespace'))
-  --generated-members <members names>
-                        List of members which are set dynamically and missed
-                        by pylint inference system, and so shouldn't trigger
-                        E1101 when accessed. Python regular expressions are
-                        accepted. (default: ())
-  --contextmanager-decorators <decorator names>
-                        List of decorators that produce context managers, such
-                        as contextlib.contextmanager. Add to this list to
-                        register other decorators that produce valid context
-                        managers. (default: ['contextlib.contextmanager'])
-  --missing-member-hint-distance <member hint edit distance>
-                        The minimum edit distance a name should have in order
-                        to be considered a similar match for a missing member
-                        name. (default: 1)
-  --missing-member-max-choices <member hint max choices>
-                        The total number of similar names that should be taken
-                        in consideration when showing a hint for a missing
-                        member. (default: 1)
-  --missing-member-hint <missing member hint>
-                        Show a hint with possible names when a member name was
-                        not found. The aspect of finding the hint is based on
-                        edit distance. (default: True)
-  --signature-mutators <decorator names>
-                        List of decorators that change the signature of a
-                        decorated function. (default: [])
 
 Basic:
   --good-names <names>  Good variable names which should always be accepted,
@@ -597,159 +744,17 @@ Basic:
                         Minimum line length for functions/classes that require
                         docstrings, shorter ones are exempt. (default: -1)
 
-Imports:
-  BaseChecker for import statements.
+Method_args:
+  BaseChecker for method_args.
 
-  --deprecated-modules <modules>
-                        Deprecated modules which should not be used, separated
-                        by a comma. (default: ())
-  --preferred-modules <module:preferred-module>
-                        Couples of modules and preferred modules, separated by
-                        a comma. (default: ())
-  --import-graph <file.gv>
-                        Output a graph (.gv or any supported image format) of
-                        all (i.e. internal and external) dependencies to the
-                        given file (report RP0402 must not be disabled).
-                        (default: )
-  --ext-import-graph <file.gv>
-                        Output a graph (.gv or any supported image format) of
-                        external dependencies to the given file (report RP0402
-                        must not be disabled). (default: )
-  --int-import-graph <file.gv>
-                        Output a graph (.gv or any supported image format) of
-                        internal dependencies to the given file (report RP0402
-                        must not be disabled). (default: )
-  --known-standard-library <modules>
-                        Force import order to recognize a module as part of
-                        the standard compatibility libraries. (default: ())
-  --known-third-party <modules>
-                        Force import order to recognize a module as part of a
-                        third party library. (default: ('enchant',))
-  --allow-any-import-level <modules>
-                        List of modules that can be imported at any level, not
-                        just the top level one. (default: ())
-  --allow-wildcard-with-all <y or n>
-                        Allow wildcard imports from modules that define
-                        __all__. (default: False)
-  --allow-reexport-from-package <y or n>
-                        Allow explicit reexports by alias from a package
-                        __init__. (default: False)
-
-Spelling:
-  Check spelling in comments and docstrings.
-
-  --spelling-dict <dict name>
-                        Spelling dictionary name. No available dictionaries :
-                        You need to install both the python package and the
-                        system dependency for enchant to work. (default: )
-  --spelling-ignore-words <comma separated words>
-                        List of comma separated words that should not be
-                        checked. (default: )
-  --spelling-private-dict-file <path to file>
-                        A path to a file that contains the private dictionary;
-                        one word per line. (default: )
-  --spelling-store-unknown-words <y or n>
-                        Tells whether to store unknown words to the private
-                        dictionary (see the --spelling-private-dict-file
-                        option) instead of raising a message. (default: n)
-  --max-spelling-suggestions N
-                        Limits count of emitted suggestions for spelling
-                        mistakes. (default: 4)
-  --spelling-ignore-comment-directives <comma separated words>
-                        List of comma separated words that should be
-                        considered directives if they appear at the beginning
-                        of a comment and should not be checked. (default: fmt:
-                        on,fmt: off,noqa:,noqa,nosec,isort:skip,mypy:)
-
-Classes:
-  Checker for class nodes.
-
-  --defining-attr-methods <method names>
-                        List of method names used to declare (i.e. assign)
-                        instance attributes. (default: ('__init__', '__new__',
-                        'setUp', 'asyncSetUp', '__post_init__'))
-  --valid-classmethod-first-arg <argument names>
-                        List of valid names for the first argument in a class
-                        method. (default: ('cls',))
-  --valid-metaclass-classmethod-first-arg <argument names>
-                        List of valid names for the first argument in a
-                        metaclass class method. (default: ('mcs',))
-  --exclude-protected <protected access exclusions>
-                        List of member names, which should be excluded from
-                        the protected access warning. (default: ('_asdict',
-                        '_fields', '_replace', '_source', '_make',
-                        'os._exit'))
-  --check-protected-access-in-special-methods <y or n>
-                        Warn about protected attribute access inside special
-                        methods (default: False)
-
-Miscellaneous:
-  BaseChecker for encoding issues.
-
-  --notes <comma separated values>
-                        List of note tags to take in consideration, separated
-                        by a comma. (default: ('FIXME', 'XXX', 'TODO'))
-  --notes-rgx <regexp>  Regular expression of note tags to take in
-                        consideration. (default: )
-
-Exceptions:
-  Exception related checks.
-
-  --overgeneral-exceptions <comma-separated class names>
-                        Exceptions that will emit a warning when caught.
-                        (default: ('builtins.BaseException',
-                        'builtins.Exception'))
-
-Similarities:
-  Checks for similarities and duplicated code.
-
-  --min-similarity-lines <int>
-                        Minimum lines number of a similarity. (default: 4)
-  --ignore-comments <y or n>
-                        Comments are removed from the similarity computation
-                        (default: True)
-  --ignore-docstrings <y or n>
-                        Docstrings are removed from the similarity computation
-                        (default: True)
-  --ignore-imports <y or n>
-                        Imports are removed from the similarity computation
-                        (default: True)
-  --ignore-signatures <y or n>
-                        Signatures are removed from the similarity computation
-                        (default: True)
-
-Variables:
-  BaseChecker for variables.
-
-  --init-import <y or n>
-                        Tells whether we should check for unused import in
-                        __init__ files. (default: False)
-  --dummy-variables-rgx <regexp>
-                        A regular expression matching the name of dummy
-                        variables (i.e. expected to not be used). (default: _+
-                        $|(_[a-zA-Z0-9_]*[a-zA-Z0-
-                        9]+?$)|dummy|^ignored_|^unused_)
-  --additional-builtins <comma separated list>
-                        List of additional names supposed to be defined in
-                        builtins. Remember that you should avoid defining new
-                        builtins when possible. (default: ())
-  --callbacks <callbacks>
-                        List of strings which can identify a callback function
-                        by name. A callback name must start or end with one of
-                        those strings. (default: ('cb_', '_cb'))
-  --redefining-builtins-modules <comma separated list>
-                        List of qualified module names which can have objects
-                        that can redefine builtins. (default: ('six.moves',
-                        'past.builtins', 'future.builtins', 'builtins', 'io'))
-  --ignored-argument-names <regexp>
-                        Argument names that match this expression will be
-                        ignored. (default:
-                        re.compile('_.*|^ignored_|^unused_'))
-  --allow-global-unused-variables <y or n>
-                        Tells whether unused global variables should be
-                        treated as a violation. (default: True)
-  --allowed-redefined-builtins <comma separated list>
-                        List of names allowed to shadow builtins (default: ())
+  --timeout-methods <comma separated list>
+                        List of qualified names (i.e., library.method) which
+                        require a timeout parameter e.g.
+                        'requests.api.get,requests.api.post' (default:
+                        ('requests.api.delete', 'requests.api.get',
+                        'requests.api.head', 'requests.api.options',
+                        'requests.api.patch', 'requests.api.post',
+                        'requests.api.put', 'requests.api.request'))
 ```
 
 ### Installation on mega-linter Docker image
