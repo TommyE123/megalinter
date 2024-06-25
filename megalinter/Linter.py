@@ -363,13 +363,13 @@ class Linter:
                             f"{self.workspace}{os.path.sep}{self.linter_rules_path}"
                             + f"{os.path.sep}{file_to_check}"
                         )
-                    elif os.path.isfile(
-                            f"{self.workspace}{os.path.sep}{self.default_rules_location}{os.path.sep}{file_to_check}"
-                    ):
-                        found_file = (
-                            f"{self.workspace}{os.path.sep}{self.default_rules_location}"
-                            + f"{os.path.sep}{file_to_check}"
-                        )
+                    # elif os.path.isfile(
+                    #         f"{self.workspace}{os.path.sep}{self.default_rules_location}{os.path.sep}{file_to_check}"
+                    # ):
+                    #     found_file = (
+                    #         f"{self.workspace}{os.path.sep}{self.default_rules_location}"
+                    #         + f"{os.path.sep}{file_to_check}"
+                    #     )
                     elif os.path.isfile(
                         f"{self.workspace}{os.path.sep}{self.files_sub_directory}{os.path.sep}{file_to_check}"
                     ):
