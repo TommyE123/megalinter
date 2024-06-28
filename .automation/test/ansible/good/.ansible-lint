@@ -1,5 +1,0 @@
----
-# .ansible-lint
-
-quiet: false
-verbosity: 1
