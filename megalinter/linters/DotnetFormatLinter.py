@@ -2,6 +2,7 @@
 """
 Use dotnet-format to lint CSharp files
 """
+import logging
 
 from megalinter import Linter
 
@@ -11,6 +12,7 @@ class DotnetFormatLinter(Linter):
     def build_lint_command(self, file=None):
         # cli_lint_mode = list_of_files or project
         dotnet_format_command = " ".join(super().build_lint_command(None))
+        logging.info("commands: " + dotnet_format_command)
         commands = [
             dotnet_format_command + " | tee /dev/tty2 2>&1",
             'exit "${PIPESTATUS[0]}"',

@@ -1,5 +1,4 @@
 // https://github.com/terraform-linters/tflint/blob/master/docs/user-guide/config.md
-
 config {
   call_module_type = "local"
   force = false
