@@ -101,7 +101,7 @@ jobs:
       ###################################
       - name: Build MegaLinter Docker Image (quick)
         id: docker_build_quick
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: Dockerfile-quick
